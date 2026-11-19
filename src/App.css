@@ -1,10 +1,162 @@
 .app {
   max-width: 480px;
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: 24px 16px 32px;
 }
 
 h1 {
   margin: 0 0 16px;
   font-size: 1.75rem;
+}
+
+h2 {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e3e6ea;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.muted {
+  color: #6b7280;
+}
+
+/* Input + button rows */
+.row {
+  display: flex;
+  gap: 8px;
+}
+
+.row input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 12px;
+  font-size: 16px; /* 16px stops iOS zooming on focus */
+  border: 1px solid #cfd4da;
+  border-radius: 8px;
+}
+
+.row input:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 1px;
+}
+
+.row button {
+  padding: 10px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background: #2563eb;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.row button:hover {
+  background: #1d4ed8;
+}
+
+/* Allergy chips */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 12px;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px 4px 12px;
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  border-radius: 999px;
+}
+
+.chip button {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  font-size: 12px;
+  line-height: 1;
+  color: #4338ca;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.chip button:hover {
+  background: #c7d2fe;
+}
+
+/* Result banners */
+.banner {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.banner.danger {
+  color: #991b1b;
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
+.banner.safe {
+  color: #166534;
+  background: #dcfce7;
+  border-color: #86efac;
+}
+
+.banner.unknown {
+  color: #854d0e;
+  background: #fef9c3;
+  border-color: #fde047;
+}
+
+/* History */
+.history {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.history li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-top: 1px solid #f0f1f3;
+}
+
+.history li:first-child {
+  border-top: none;
+}
+
+.history-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.history-time {
+  flex-shrink: 0;
+  font-size: 0.875rem;
+}
+
+footer {
+  margin-top: 8px;
+  font-size: 0.875rem;
+  text-align: center;
 }
