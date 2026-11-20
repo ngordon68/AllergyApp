@@ -10,7 +10,7 @@ function timeAgo(iso, now) {
   return `${Math.floor(hours / 24)}d ago`
 }
 
-export default function History({ rows }) {
+export default function History({ rows, loading }) {
   const [now, setNow] = useState(() => Date.now())
 
   // Re-render every 30s so "2m ago" stays current.
@@ -22,7 +22,9 @@ export default function History({ rows }) {
   return (
     <section className="card">
       <h2>Recent checks</h2>
-      {rows.length === 0 ? (
+      {loading ? (
+        <p className="muted">Loading…</p>
+      ) : rows.length === 0 ? (
         <p className="muted">No checks yet.</p>
       ) : (
         <ul className="history">

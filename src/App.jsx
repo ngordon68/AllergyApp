@@ -1,42 +1,37 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import AllergyList from './components/AllergyList.jsx'
 import DishChecker from './components/DishChecker.jsx'
 import ResultBanner from './components/ResultBanner.jsx'
 import History from './components/History.jsx'
 import { checkDish, normalize } from './checkDish.js'
-
-// Phase 2 fake data. Replaced by Supabase in Phase 3.
-const minutesAgo = m => new Date(Date.now() - m * 60_000).toISOString()
-
-const SEED_ALLERGIES = [
-  { id: crypto.randomUUID(), name: 'peanuts' },
-  { id: crypto.randomUUID(), name: 'shellfish' },
-]
-
-const SEED_HISTORY = [
-  {
-    id: crypto.randomUUID(),
-    kind: 'check',
-    name: 'pad thai',
-    matched_allergens: ['peanuts', 'shellfish'],
-    is_safe: false,
-    created_at: minutesAgo(2),
-  },
-  {
-    id: crypto.randomUUID(),
-    kind: 'check',
-    name: 'caesar salad',
-    matched_allergens: [],
-    is_safe: true,
-    created_at: minutesAgo(5),
-  },
-]
+import { loadEntries } from './api.js'
 
 function App() {
-  const [allergies, setAllergies] = useState(SEED_ALLERGIES)
-  const [history, setHistory] = useState(SEED_HISTORY)
+  const [allergies, setAllergies] = useState([])
+  const [history, setHistory] = useState([])
   const [result, setResult] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    let ignore = false // skip stale results (StrictMode runs effects twice in dev)
+    loadEntries()
+      .then(data => {
+        if (ignore) return
+        setAllergies(data.allergies)
+        setHistory(data.history)
+      })
+      .catch(err => {
+        if (!ignore) setError(err.message || String(err))
+      })
+      .finally(() => {
+        if (!ignore) setLoading(false)
+      })
+    return () => {
+      ignore = true
+    }
+  }, [])
 
   // Returns true when the allergy was added, so the input can clear.
   function addAllergy(text) {
@@ -71,7 +66,13 @@ function App() {
     <main className="app">
       <h1>Allergy Checker</h1>
 
-      <AllergyList allergies={allergies} onAdd={addAllergy} onRemove={removeAllergy} />
+      {error && (
+        <div className="banner danger" role="alert">
+          Couldn't load your data: {error}
+        </div>
+      )}
+
+      <AllergyList allergies={allergies} loading={loading} onAdd={addAllergy} onRemove={removeAllergy} />
 
       <section className="card">
         <h2>Check a dish</h2>
@@ -79,7 +80,7 @@ function App() {
         <ResultBanner result={result} />
       </section>
 
-      <History rows={history} />
+      <History rows={history} loading={loading} />
 
       <footer className="muted">Not medical advice. Always ask staff.</footer>
     </main>

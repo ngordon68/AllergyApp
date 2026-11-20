@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export default function AllergyList({ allergies, onAdd, onRemove }) {
+export default function AllergyList({ allergies, loading, onAdd, onRemove }) {
   const [text, setText] = useState('')
 
   function handleSubmit(e) {
@@ -11,7 +11,9 @@ export default function AllergyList({ allergies, onAdd, onRemove }) {
   return (
     <section className="card">
       <h2>My allergies</h2>
-      {allergies.length === 0 ? (
+      {loading ? (
+        <p className="muted">Loading…</p>
+      ) : allergies.length === 0 ? (
         <p className="muted">No allergies saved yet.</p>
       ) : (
         <ul className="chips">
